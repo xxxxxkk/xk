@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gw.demo.mapper.PlantformMerchantHGamePlayEntityMapper">
+    <insert id="plantformInsert">
+        insert into plantform_merchant_game_play
+        (merchant_id,game_id,game_play_id,`status`,`created_at`)
+        values
+        (#{merchantId},#{gameId},#{gamePlayId},#{status},#{createdAt})
+
+    </insert>
+    <update id="updateStatus">
+        update plantform_merchant_game_play
+        set `status` = #{status}
+        where merchant_id = #{merchantId}
+    </update>
+
+
+    <select id="getGameListByPlantformId" resultType="com.gw.demo.entity.dto.PlantformMerchatGamePlayDto">
+        select plantform_merchant_game_play.id,plantform_merchant.merchant_name,game_info.name as game_name,game_play.name as game_play_name,plantform_merchant_game_play.`status`,game_info.`order`
+        from plantform_merchant_game_play
+        left join plantform_merchant on plantform_merchant_game_play.merchant_id = plantform_merchant.id
+        left join game_info on plantform_merchant_game_play.game_id = game_info.id
+        left join game_play on plantform_merchant_game_play.game_play_id = game_play.id
+        where 1=1
+        <if test="merchantId != null and merchantId != ''">
+            and plantform_merchant_game_play.merchant_id = #{merchantId}
+        </if>
+        <if test="gameId != null and gameId != ''">
+            and plantform_merchant_game_play.game_id = #{gameId}
+        </if>
+        <if test="status != null and status != ''">
+            and plantform_merchant_game_play.`status` = #{status}
+        </if>
+    </select>
+</mapper>

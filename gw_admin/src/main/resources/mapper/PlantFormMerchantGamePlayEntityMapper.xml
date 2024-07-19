@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gw.demo.mapper.PlantFormMerchantGamePlayEntityMapper">
+    <update id="editStatus">
+        update plant_form_merchant_game_play set status = #{status} where game_id = #{gameId}
+    </update>
+    <update id="updateStatusByGamePlayTypeId">
+        update plant_form_merchant_game_play set status = #{status} where game_play_id = #{gamePlayTypeId}
+    </update>
+    <update id="updateStatusByGamePlayId">
+        update plant_form_merchant_game_play set status = #{status} where id = #{gamePlayId}
+    </update>
+
+
+    <delete id="delecteByGameId" parameterType="java.lang.Long">
+        delete from plant_form_merchant_game_play where game_id = #{gameId}
+    </delete>
+    <delete id="delecteByGamePlayTypeId" parameterType="java.lang.Long">
+        delete from plant_form_merchant_game_play where game_play_id = #{gamePlayTypeId}
+    </delete>
+    <delete id="delecteByGameIdGamePlayTypeIds">
+        delete from plant_form_merchant_game_play where game_id = #{gameId} and game_play_id not in
+        <foreach collection="gamePlayTypeIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

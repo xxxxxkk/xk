@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gw.demo.mapper.PlantFormMerchantGameEntityMapper">
+    <update id="editStatus">
+        update plantform_merchant_game set status = #{status} where game_id = #{gameId}
+    </update>
+    <update id="updateByMerchantId" parameterType="com.gw.demo.entity.PlantFormMerchantGameEntity">
+        update plantform_merchant_game set status = #{status} where merchant_id = #{merchantId} and game_id = #{gameId}
+    </update>
+    <update id="updateStatus">
+        update plantform_merchant_game set status = #{status} where merchant_id = #{merchantId}
+    </update>
+
+    <delete id="delecteByGameId" parameterType="java.lang.Long">
+        delete from plantform_merchant_game where game_id = #{gameId}
+    </delete>
+    <delete id="delecteByMerchantId" parameterType="java.lang.Long">
+        delete from plantform_merchant_game where merchant_id = #{merchantId}
+    </delete>
+    <select id="getPlantformGameList" parameterType="com.gw.demo.entity.dto.vo.PlantformMerchatVo"
+            resultType="com.gw.demo.entity.dto.PlantformMerchatGamePlayDto">
+        select plantform_merchant_game_play.id,plantform_merchant.merchant_name,game_info.name as game_name,game_play.name as game_play_name,plantform_merchant_game_play.`status`,game_info.`order`
+        from plantform_merchant_game_play
+                 left join plantform_merchant on plantform_merchant_game_play.merchant_id = plantform_merchant.id
+                 left join game_info on plantform_merchant_game_play.game_id = game_info.id
+                 left join game_play on plantform_merchant_game_play.game_play_id = game_play.id
+        where 1=1
+        <if test="merchantId != null and merchantId != ''">
+            and plantform_merchant.id = #{merchantId}
+        </if>
+        <if test="gameName!= null and gameName!= ''">
+            and game_info.name like concat('%',#{gameName},'%')
+        </if>
+        <if test="status != null and status != ''">
+            and plantform_merchant_game_play.`status` = #{status}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gw.demo.mapper.PlantformGameMapper">
+    <insert id="insertPlantGame" parameterType="com.gw.demo.entity.PlantformGame">
+        INSERT INTO plantform_game (plantform_id, game_id, status,created_at)
+        VALUES (#{plantformId}, #{gameId}, #{status},#{createdAt})
+    </insert>
+    <update id="updateStatusById">
+        update plantform_game set status = #{status} where id = #{id}
+    </update>
+    <update id="updateStatusByPlantformIdAndGamePlayId">
+        update plantform_game set status = #{status} where plantform_id = #{plantformId} and game_id = #{gamePlayId}
+    </update>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gw.demo.mapper.GameInfoMapper">
+    <update id="editStatus">
+        update game_info set status = #{status} where id = #{id}
+    </update>
+    <update id="updateByName" parameterType="com.gw.demo.entity.GameInfoEntity">
+        update game_info set status = #{status}, type = #{type}, icon = #{icon}, `order` = #{order}, code = #{code} where name = #{name}
+    </update>
+    <delete id="deleteByGameId" parameterType="java.lang.Long">
+        delete from game_info where id = #{id}
+    </delete>
+    <select id="getAllGameInfo" resultType="com.gw.demo.entity.GameInfoEntity">
+        select * from game_info where 1=1
+        <if test="status=='' and status!=null">
+            and status = #{status}
+        </if>
+        <if test="name!=null and name!=''">
+            and name = #{name}
+        </if>
+        <if test="type!=null and type!=''">
+            and type = #{type}
+        </if>
+    </select>
+
+    <select id="getById" resultType="com.gw.demo.entity.GameInfoEntity" parameterType="java.lang.Long">
+        select * from game_info where id = #{id}
+    </select>
+    <select id="getGameList" resultType="com.gw.demo.entity.GameInfoEntity" parameterType="java.lang.Long">
+        select id,name,type from game_info
+                 left join plantform_game on geme_info.id = plantform_game.game_id
+                 where status = 1
+        <if test="plantformId!=null and plantformId!=''">
+        and plantform_id = #{plantformId}
+        </if>
+        <if test="type!=null and type!=''">
+            and type = #{type}
+        </if>
+    </select>
+    <select id="getByName" resultType="com.gw.demo.entity.GameInfoEntity" parameterType="java.lang.String">
+        select * from game_info where name = #{name}
+    </select>
+</mapper>
